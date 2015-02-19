@@ -19,10 +19,16 @@
 
 -define(TIMEOUT, 5000).
 
+-ifdef(namespaced_types).
+    -define(QUEUE_TYPE, queue:queue()).
+-else.
+    -define(QUEUE_TYPE, queue()).
+-endif.
+
 -record(state, {
     supervisor :: pid(),
-    workers :: queue(),
-    waiting :: queue(),
+    workers :: ?QUEUE_TYPE,
+    waiting :: ?QUEUE_TYPE,
     monitors :: ets:tid(),
     size = 5 :: non_neg_integer(),
     overflow = 0 :: non_neg_integer(),
